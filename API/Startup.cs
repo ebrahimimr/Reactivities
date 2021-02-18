@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Activities;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,27 +37,27 @@ namespace API
             });
             
             services.AddCors(option=>{
-                        option.AddPolicy("CorsPolicy",Policy =>
-                        {
-                    Policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("Http://localhost:3000");
-                        });
-                    });
-
+                             option.AddPolicy("CorsPolicy",Policy =>
+                             {
+                               Policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("Http://localhost:3000");
+                             });
+                             });
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.CustomSchemaIds(x => x.FullName);
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));  
             }
 
             //app.UseHttpsRedirection();
