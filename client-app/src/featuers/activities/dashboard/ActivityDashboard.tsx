@@ -1,7 +1,7 @@
 import { group } from 'console'
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import { CommentAvatarProps, Grid, GridColumn, List } from 'semantic-ui-react'
-import { IActivity } from '../../../app/Models/Activity'
+import { IActivity } from '../../../app/models/Activity'
 import { ActivityDetails } from '../details/ActivityDetails'
 import { ActivityForm } from '../form/ActivityForm'
 import { ActivityList } from './ActivityList'
@@ -15,7 +15,9 @@ interface IProps{
     setSelectedActivity :(activity : IActivity | null) =>void;
     createActivity :(activity : IActivity) => void;
     editActivity :(activity : IActivity) => void;
-    deleteActivity :(id : string) => void;
+    deleteActivity :(event : SyntheticEvent<HTMLButtonElement>,id : string) => void;
+    submitting : boolean;
+    target :string;
 }
 
 export const ActivityDashboard: React.FC<IProps> = ({
@@ -27,7 +29,9 @@ export const ActivityDashboard: React.FC<IProps> = ({
   setSelectedActivity,
   createActivity,
   editActivity,
-  deleteActivity
+  deleteActivity,
+  submitting,
+  target
 }) => {
   return (
     <Grid>
@@ -36,6 +40,8 @@ export const ActivityDashboard: React.FC<IProps> = ({
           activities={activities}
           selectActivity={selectActivity}
           deleteActivity={deleteActivity}
+          submitting = {submitting}
+          target = {target}
         />
       </Grid.Column>
       <GridColumn width={6}>
@@ -52,6 +58,7 @@ export const ActivityDashboard: React.FC<IProps> = ({
             activity={selectedActivity!}
             createActivity={createActivity}
             editActivity={editActivity}
+            submitting={submitting}
           />
         )}
       </GridColumn>
