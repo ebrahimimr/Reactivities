@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { promises } from 'dns';
+import { Observer } from 'mobx-react-lite';
 import { IActivity } from '../models/Activity';
 
 axios.defaults.baseURL='http://localhost:5000/api'
@@ -27,6 +28,6 @@ const Activities ={
     delete : (id:string) =>request.del(`/activities/${id}`)
 }
 
-export default {
+export default  {
     Activities
 }
