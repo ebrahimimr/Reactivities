@@ -1,9 +1,13 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext,useEffect } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Button, ButtonGroup, Card, Image } from 'semantic-ui-react'
+import { Button, ButtonGroup, Card, Grid, GridColumn, Image } from 'semantic-ui-react'
 import LoadingComponent from '../../../app/layout/LoadingComponent'
 import ActivityStore from '../../../app/stores/activityStore'
+import { ActivityDetailedChat } from './ActivityDetailedChat'
+import { ActivityDetailedHeader } from './ActivityDetailedHeader'
+import { ActivityDetailedInfo } from './ActivityDetailedInfo'
+import { ActivityDetailedSidebar } from './ActivityDetailedSidebar'
 
 interface DetailParams{
   id :string
@@ -17,44 +21,24 @@ const ActivityDetails :React.FC<RouteComponentProps<DetailParams>> = ({match,his
 
     useEffect(() => {
      loadActivity(match.params.id);
-    }, [loadActivity,match.params.id])
+    }, [loadActivity,match.params.id,history])
 
-    if (loadingInitial || !activity ) return <LoadingComponent content="Loading Activity ..." />
+    if (loadingInitial  ) return <LoadingComponent content="Loading Activity ..." />
+
+    if(!activity)
+      return <h2>Activity Not Found</h2>
 
     return (
-      <Card fluid>
-        <Image
-          src={`/assets/categoryimages/${activity!.category}.jpg`}
-          wrapped
-          ui={false}
-        />
-        <Card.Content>
-          <Card.Header>{activity!.title}</Card.Header>
-          <Card.Meta>
-            <span>{activity!.date}</span>
-          </Card.Meta>
-          <Card.Description>{activity!.description}</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <ButtonGroup widths={2}>
-            {/* onClick={() => openEditForm(activity!.id)} */}
-            <Button
-              as ={Link} to ={`/manage/${activity.id}`}
-              basic
-              content="Edit"
-              color="blue"
-            />
-            {/* onClick={cancelSelectedActivity} */}
-            {/* onClick={()=>history.goBack()} */}
-            <Button
-              onClick={()=>history.push('/activities')}
-              basic
-              content="Cancel"
-              color="grey"
-            />
-          </ButtonGroup>
-        </Card.Content>
-      </Card>
+    <Grid>
+      <Grid.Column width={10}>
+        <ActivityDetailedHeader activity={activity}/>
+        <ActivityDetailedInfo  activity={activity}/>
+        <ActivityDetailedChat/>
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <ActivityDetailedSidebar/>
+      </Grid.Column>
+    </Grid>
     );
 }
 export default observer(ActivityDetails);    
