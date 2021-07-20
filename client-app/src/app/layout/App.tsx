@@ -15,6 +15,7 @@ import ActivityForm from "../../featuers/activities/form/ActivityForm";
 import ActivityDetails from "../../featuers/activities/details/ActivityDetails";
 import NotFound from "./NotFound";
 import { ToastContainer } from "react-toastify";
+import SidebarR from "../../featuers/sidebar/SidebarR";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
